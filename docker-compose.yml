@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+
+  matapp:
+    image: matapp
+    ports:
+      - '8088:8000'
+    volumes:
+      - ./data/input:/app/data/input
+      - ./data/output:/app/data/output
+#      - /.data/METERIAL_METALICO.blend:/app/data/METERIAL_METALICO.blend
