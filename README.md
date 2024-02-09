@@ -6,9 +6,14 @@ Input type of objects: *.usd (after POST request it puts *.usd files to data/inp
 Output type of objects: *.glb (after processing the object with applied materials will be at the data.output folder)
 
 ### Simple case - one material for a whole object
+##### Endpoint: ./simple_apply/
 The case when we have an object and we apply single (specified in request) material.
 The script takes POST request with *.usd model and material (as a string), applies regarding material to the object in Blender and outputs it as *.glb file. 
 
+### Multimaterial case - stone and metal materials apply to different object
+##### Endpoint: ./cls_apply/
+In this case the uploaded object will be classified (mesh-wise) with two classes ('stone' and 'metal'). Materials (materials ids specify in request with integers) will be applied according the classification.
+Finally the object will be exported to .gltf to **./data/output** folder.
 
 ### Installation
 * Blender file with materials - the blender scene with no objects with materials (will be fed with docker-compose.yml):
