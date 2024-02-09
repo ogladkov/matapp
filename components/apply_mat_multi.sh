@@ -1,0 +1,1 @@
+blender -b -P ./apply_mat_exec_multi.py

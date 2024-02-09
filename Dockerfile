@@ -8,6 +8,7 @@ RUN apt-get install tar curl libfontconfig1 libxrender1 libxi6 libgconf-2-4 libx
 
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install torch==1.11.0+cpu torchvision==0.12.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
 
 # Copy app files
 COPY ./server.py /app/server.py
