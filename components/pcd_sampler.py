@@ -16,10 +16,8 @@ def read_off(file):
             n_verts, n_faces, __ = tuple([int(s) for s in off_header.split(' ')])
 
         verts = [[float(s) for s in f.readline().strip('(').strip(')').split()] for i_vert in range(n_verts)]
-        verts = np.array(verts)
 
         faces = [[int(s) for s in f.readline().strip('(').strip(')').split()][1:] for i_face in range(n_faces)]
-        faces = np.array(faces)
 
     return verts, faces
 

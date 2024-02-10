@@ -22,31 +22,46 @@ class PointSamplerEven(object):
         f = lambda i: s * pt1[i] + (t - s) * pt2[i] + (1 - t) * pt3[i]
         return (f(0), f(1), f(2))
 
+    def triangulate_face(self, verts, face):
+        triangles = []
+
+        for i in range(1, len(face) - 1):
+            triangles.append((face[0], face[i], face[i + 1]))
+
+        return triangles
+
     def __call__(self, verts, faces):
         verts = np.array(verts)
-        total_area = sum(self.triangle_area(verts[face[0]], verts[face[1]], verts[face[2]]) for face in faces)
+        total_area = 0
+        face_triangles = []
+
+        for face in faces:
+            if len(face) == 3:
+                triangles = [(face[0], face[1], face[2])]
+            else:
+                triangles = self.triangulate_face(verts, face)
+            face_triangles.extend(triangles)
+            for tri in triangles:
+                total_area += self.triangle_area(verts[tri[0]], verts[tri[1]], verts[tri[2]])
 
         sampled_points = []
 
-        for face in faces:
-            area = self.triangle_area(verts[face[0]], verts[face[1]], verts[face[2]])
+        for tri in face_triangles:
+            area = self.triangle_area(verts[tri[0]], verts[tri[1]], verts[tri[2]])
             points_in_face = int(np.round(self.output_size * (area / total_area)))
 
             for _ in range(points_in_face):
-                cl = face[-1]
-                sampled_points.append(self.sample_point(verts[face[0]], verts[face[1]], verts[face[2]]))
+                sampled_points.append(self.sample_point(verts[tri[0]], verts[tri[1]], verts[tri[2]]))
 
-        # In case rounding errors result in a different number of points, we adjust the number of sampled points
+        # Adjust the number of sampled points due to rounding errors, as before
         while len(sampled_points) > self.output_size:
             sampled_points.pop()
 
         while len(sampled_points) < self.output_size:
-            face = random.choice(faces)
-            sampled_points.append(self.sample_point(verts[face[0]], verts[face[1]], verts[face[2]]))
+            tri = random.choice(face_triangles)
+            sampled_points.append(self.sample_point(verts[tri[0]], verts[tri[1]], verts[tri[2]]))
 
         pcd = np.array(sampled_points)
-
-        # Normalize
-        pcd = pc_normalize(pcd)
+        pcd = pc_normalize(pcd)  # Normalize
 
         return pcd
