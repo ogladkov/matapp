@@ -97,3 +97,32 @@ def cls_apply(
     # Process model with Blender
     shell_script_path = './components/apply_mat_multi.sh'
     subprocess.run(['sh', shell_script_path])
+
+
+@app.post('/corrected_apply/')
+def corrected_apply(
+        stone_mat_id: str,
+        metal_mat_id: str,
+        # model: UploadFile = File(...)
+):
+    # Save gltf
+    # model_bytes = model.file.read()
+    # model_path = './data/output/model.glb'
+    #
+    # with open(model_path, 'wb') as model_file:
+    #     model_file.write(model_bytes)
+
+    # Apply materials
+
+    materials_data = {'stone': stone_mat_id, 'metal': metal_mat_id}
+
+    with open('components/correct_apply.py', 'r') as apply_mat:
+        apply_mat = apply_mat.read()
+        apply_mat = apply_mat.replace('{{MAT_DATA}}', f'mat_data = {str(materials_data)}')
+
+    with open('./correct_apply_exec.py', 'w') as apply_mat_exec:
+        apply_mat_exec.write(apply_mat)
+
+    # Process gLTF (glb) model with Blender
+    shell_script_path = './components/correct_apply.sh'
+    subprocess.run(['sh', shell_script_path])
