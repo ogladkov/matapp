@@ -37,11 +37,17 @@ for obj in bpy.context.selected_objects:
 
     if obj.type == 'MESH':
         obj.data.materials.clear()
-        obj_mat = bpy.data.materials.get(mat_data[obj.name])
+        obj_mat = bpy.data.materials.get(mat_data[obj.name][1])
         obj.data.materials.append(obj_mat)
+
+        # rename meshes with classification data
+        obj.data.name = obj.data.name + '_x_' + mat_data[obj.name][0]
 
 # Save the scene as glTF
 bpy.ops.export_scene.gltf(
     filepath=f'./data/output/{file_prefix}.glb',
     export_format='GLB'
 )
+
+# # Save the scene as usd
+# bpy.ops.wm.usd_export(filepath=f'./data/output/{file_prefix}.usd')

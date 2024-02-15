@@ -79,10 +79,10 @@ def cls_apply(
     for k, v in labels.items():
 
         if v == 0:
-            mat = stone_mat_id
+            mat = ['stone', stone_mat_id]
 
         elif v == 1:
-            mat = metal_mat_id
+            mat = ['metal', metal_mat_id]
 
         materials_data[k.replace('model_', '')] = mat
 
