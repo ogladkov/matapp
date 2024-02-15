@@ -15,6 +15,14 @@ The script takes POST request with *.usd model and material (as a string), appli
 In this case the uploaded object will be classified (mesh-wise) with two classes ('stone' and 'metal'). Materials (materials ids specify in request with integers) will be applied according the classification.
 Finally the object will be exported to .gltf to **./data/output** folder.
 
+### Manual correction case - fix the mistake of the classifying NN'
+##### Endpoint: ./corrected_apply/
+In the case of wrong prediction of the material for a mesh (or meshes) in a model, you can open the gLTF (glb-file) in Blender
+and manually add for the mesh name (*not object name!!*) the suffix: '_x_stone' or '_x_metal'. Aftrer that it is necessary 
+to export the gLTF (glb) file overwriting the previous one in the folder './data/output'.
+Now you can use the endpoint selecting materials again. The proper materials will be applied and you will get the result 
+at the same gLTF (glb) file at './data/output/model.glb'
+
 ### Installation
 * Blender file with materials - the blender scene with no objects with materials (will be fed with docker-compose.yml):
   * Silver
