@@ -35,6 +35,10 @@ def simple_apply(mat_id: str, data: UploadFile = File(...)):
     shell_script_path = './components/apply_mat.sh'
     subprocess.run(['sh', shell_script_path])
 
+    file_path = './data/output/model.glb'
+
+    return FileResponse(file_path, media_type='model/gltf+json', filename="model.glb")
+
 
 @app.post('/cls_apply/')
 def cls_apply(
@@ -98,22 +102,25 @@ def cls_apply(
     shell_script_path = './components/apply_mat_multi.sh'
     subprocess.run(['sh', shell_script_path])
 
+    file_path = './data/output/model.glb'
+
+    return FileResponse(file_path, media_type='model/gltf+json', filename="model.glb")
+
 
 @app.post('/corrected_apply/')
 def corrected_apply(
         stone_mat_id: str,
         metal_mat_id: str,
-        # model: UploadFile = File(...)
+        model: UploadFile = File(...)
 ):
     # Save gltf
-    # model_bytes = model.file.read()
-    # model_path = './data/output/model.glb'
-    #
-    # with open(model_path, 'wb') as model_file:
-    #     model_file.write(model_bytes)
+    model_bytes = model.file.read()
+    model_path = './data/output/model.glb'
+
+    with open(model_path, 'wb') as model_file:
+        model_file.write(model_bytes)
 
     # Apply materials
-
     materials_data = {'stone': stone_mat_id, 'metal': metal_mat_id}
 
     with open('components/correct_apply.py', 'r') as apply_mat:
@@ -126,3 +133,7 @@ def corrected_apply(
     # Process gLTF (glb) model with Blender
     shell_script_path = './components/correct_apply.sh'
     subprocess.run(['sh', shell_script_path])
+
+    file_path = './data/output/model.glb'
+
+    return FileResponse(file_path, media_type='model/gltf+json', filename="model.glb")
