@@ -25,12 +25,15 @@ at the same gLTF (glb) file at './data/output/model.glb'
 
 ### Installation
 * Blender file with materials - the blender scene with no objects with materials (will be fed with docker-compose.yml):
-  * Silver
-  * Rose Gold
-  * White Gold
-  * Yellow Gold
-  * Palladium
-  * Black Rhodium
+  * 1: Silver
+  * 2: Rose Gold
+  * 3: White Gold
+  * 4: Yellow Gold
+  * 5: Palladium
+  * 6: Black Rhodium
+  * 7: Emerald
+  * 8: Ruby
+  * 9: Sapphire
 * Build container with ```docker build -t matapp .```
 * Run the container with ```docker-compose up -d```
 * The endpoint at the specified in *docker-compose.yml* address and port
